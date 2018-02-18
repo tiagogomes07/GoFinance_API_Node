@@ -1,56 +1,33 @@
 var express = require('express');
 var router = express.Router();
-
-var sequelize = require('../dal/dalSequelize');
+const Sequelize = require('sequelize');
+const connection = require('../dal/Sequelize')();
 
 router.get('/', function(req, res, next) {  
-    // dalMySql.CarregarLancamentos()
-    // .then( x=> res.json(x) )
-    // .catch( x=> res.status(500).json(x));   
     
-   // var LoginModel = require('../models/LoginModel');
-    
-    const Sequelize = require('sequelize');
-    const sequelize = new Sequelize('GoFinanceDB', 'bancoemail1', '5ff3f546', {
-        host: 'bancoemail1.c3cpc4lfowun.us-east-1.rds.amazonaws.com',
-        dialect: 'mysql',
-    
-        pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-        },
-    
-        operatorsAliases: false
-        // SQLite only
+    var Login = require('../models/Login');
+    var Login = Login(connection,Sequelize.DataTypes);
+
+    connection.sync().then( function(){
         
-    });
-        
+        // Login.create(
+        //     { PrimeiroNome : 'Tiago',
+        //      SobreNome : 'Gomes', 
+        //      UserName : 'tiago.gomes', 
+        //      Password : '12345' });
+             
+        //      console.log('created');
 
-    sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
+        // Login.findById(2).then(function(Login){
+        //     console.log(Login.dataValues);
+        // })
 
-        
-    const Login = sequelize.define('Login', {
-        PrimeiroNome: Sequelize.STRING,
-        SobreNome: Sequelize.STRING,
-        UserName: Sequelize.STRING,
-        Password :Sequelize.STRING
-    })
-
-  Login.create({ PrimeiroNome : 'Tiago', SobreNome : 'Gomes', UserName : 'tiago.gomes', Password : '12345' })
-
+        Login.findAll().then(function(Login){
+           // console.log(Login);
+           // console.log(Login.dataValues);
+        })
 
     })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
-
-
-    
 
     res.send("Ok");
 });
