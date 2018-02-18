@@ -15,19 +15,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/GetRangeDatasAnalitico', function(req, res, next) {
-    dalMySql.CarregarLancamentosRangeDatas(req.body.dtInicial,req.body.dtFinal)
-    .then( x=> res.json(x) )
-    .catch( x=> res.status(500).json(x));  
-});
-
-router.post('/GetRangeDatasSintet', function(req, res, next) {
     connection.sync().then( function(){
         Lancamento.findAll({
             where: {
-                Data: {
-                    [Op.between]: [req.body.dtInicial, req.body.dtFinal]
-                    // [Op.and]:[{ [Op.gte]: req.body.dtInicial }, {[Op.lte]: req.body.dtFinal } ]                    
-                  }              
+                Data: { [Op.between]: [req.body.dtInicial, req.body.dtFinal]  }              
             }
           })
           .then(  x=> res.json(x)  )
@@ -35,7 +26,21 @@ router.post('/GetRangeDatasSintet', function(req, res, next) {
     })
 });
 
-router.post('/create', function(req, res, next) {
+router.post('/GetRangeDatasSintet', function(req, res, next) {
+    connection.sync().then( function(){
+        Lancamento.findAll({
+            where: {
+                Data: { [Op.between]: [req.body.dtInicial, req.body.dtFinal]  }              
+            },
+            attributes: ['Descricao', [ Lancamento.sequelize.fn('sum', Lancamento.sequelize.col('Lancamento.Valor')), 'Valor' ]] , 
+            group: ['Descricao']
+          })
+          .then(  x=> res.json(x)  )
+          .catch( x=> res.status(500).json(x));  
+    }) 
+});
+        
+router.post('/Create', function(req, res, next) {
     connection.sync().then( function(){
         Lancamento.create({
             Data      : req.body.data, 
@@ -49,8 +54,17 @@ router.post('/create', function(req, res, next) {
     })    
 });
 
-router.post('/delete', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+router.post('/Delete', function(req, res, next) {
+    connection.sync().then( function(){
+        Lancamento.destroy({
+            where: {
+                id : req.body.DeleteId
+            }
+        })
+       .then( x=> res.json({'Status':x}) )
+       .catch( x=> res.status(500).json(x));       
+    })   
+
 });
 
 module.exports = router;
