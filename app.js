@@ -9,7 +9,8 @@ var cors = require('cors');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var lancamentos = require('./routes/lancamentos');
+var lancamentos = require('./routes/LancamentosRouter');
+var login = require('./routes/LoginRouter')
 
 var app = express();
 
@@ -35,7 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', index);
 //app.use('/users', users);
-app.use('/lancamentos', lancamentos);
+app.use('/Lancamentos', lancamentos);
+app.use('/Login', login);
 //var dal = require('../GoFinance_Node/dal/dalSequelize')();
 
 app.get('/', function(request, response){
