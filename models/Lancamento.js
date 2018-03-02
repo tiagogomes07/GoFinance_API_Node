@@ -24,6 +24,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
+    SaldoAtual: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
+    SaldoAntes: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
     Historico: {
       type: DataTypes.TEXT,
       allowNull: true
