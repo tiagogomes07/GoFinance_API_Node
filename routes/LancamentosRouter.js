@@ -47,7 +47,7 @@ router.post('/Create', function(req, res, next) {
             TipoDC    : req.body.tipoDC, 
             Descricao : req.body.descricao, 
             Valor     : req.body.valor, 
-            SaldoAtual: req.body.saldoAntes,
+            SaldoAntes: req.body.saldoAntes,
             SaldoFinal: req.body.saldoFinal,
             Historico : req.body.historico       
         })
