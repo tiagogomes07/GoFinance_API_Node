@@ -48,7 +48,7 @@ router.post('/Create', function(req, res, next) {
             Descricao : req.body.descricao, 
             Valor     : req.body.valor, 
             SaldoAntes: req.body.saldoAntes,
-            SaldoFinal: req.body.saldoFinal,
+            SaldoAtual: req.body.saldoAtual,
             Historico : req.body.historico       
         })
        .then( x=> res.json({'StatusSalvo':'Sucesso'}) )
